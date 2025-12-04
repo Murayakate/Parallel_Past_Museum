@@ -1,9 +1,15 @@
+import Header from '../components/Header';
+
 const DashboardPage = () => {
   return (
-    <div className="text-center py-20">
-      <h1 className="text-5xl font-heading font-bold mb-6">Dashboard Page</h1>
-      <p className="text-xl max-w-2xl mx-auto">This is where the 3x2 comparison grid and timeline will live.</p>
+    <div className="min-h-screen bg-sage">
+      <Header />
+      <main className="max-w-7xl mx-auto px-8 py-12">
+        <h2 className="text-4xl font-heading text-prussian mb-4">Dashboard</h2>
+        <p className="text-prussian font-body">This is where your tri-view grid will go in Week 2</p>
+      </main>
     </div>
   );
 };
+
 export default DashboardPage;

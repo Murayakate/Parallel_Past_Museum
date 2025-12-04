@@ -1,29 +1,22 @@
-import "./App.css";
-import "./index.css";
-// src/App.jsx
-import { BrowserRouter, Routes, Route } from 'react-router-dom';
-import MainLayout from './layouts/MainLayout';
+import React from 'react';
+import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
 import LandingPage from './pages/LandingPage';
 import DashboardPage from './pages/DashboardPage';
+import './index.css';
 
 function App() {
   return (
-    <BrowserRouter>
+    <Router>
       <Routes>
-        {/* MainLayout is to  all nested routes */}
-        <Route path="/" element={<MainLayout />}>
-          
-          {/* index means this is the default pageat that url" / "*/}
-          <Route index element={<LandingPage />} />
-          
-          {/* This loads DashboardPage when url is "/dashboard" */}
-          <Route path="dashboard" element={<DashboardPage />} />
-          
-          {/* Catch-all for 404 Not Found */}
-          <Route path="*" element={<div className="text-center py-20 text-2xl font-bold">404 - Page Not Found</div>} />
-        </Route>
+        <Route path="/" element={<LandingPage />} />
+        <Route path="/dashboard" element={<DashboardPage />} />
+        <Route path="/about" element={<div>About Page</div>} />
+        <Route path="/collections" element={<div>Collections Page</div>} />
+        <Route path="/contact" element={<div>Contact Page</div>} />
+        <Route path="/login" element={<div>Login Page</div>} />
       </Routes>
-    </BrowserRouter>
+    </Router>
   );
 }
+
 export default App;
