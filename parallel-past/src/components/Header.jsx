@@ -11,7 +11,7 @@ const Header = () => {
           <div className="w-12 h-12 rounded-full border-4 border-prussian bg-white">
             🧭
           </div>
-          <h1 className="text-2xl font-heading text-prussian">
+          <h1 className=" flex space-x-3 text-2xl font-heading text-prussian">
             PARALLEL PAST
           </h1>
         </div>

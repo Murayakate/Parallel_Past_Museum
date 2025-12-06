@@ -1,5 +1,8 @@
 
 import { Link } from 'react-router-dom';
+import heroImage1 from '../assets/hero-image-1.png';
+import heroImage2 from '../assets/hero-image-2.png';
+
 
 const Hero = () => {
   return (
@@ -24,10 +27,10 @@ const Hero = () => {
           {/* RIGHT SIDE - Two Images */}
           <div className="w-3/5 flex">
             <div className="flex-1 bg-gray-800 flex items-center justify-center">
-             <img src="assets\hero image 1.png" alt="hero image 1" />
+             <img src={heroImage1} alt="hero image 1" />
             </div>
             <div className="flex-1 bg-gray-700 flex items-center justify-center">
-              <p className="text-white">Samurai Image Here</p>
+              <img src={heroImage2} alt="hero image 2" />
             </div>
           </div>
           
