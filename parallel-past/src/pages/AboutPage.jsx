@@ -13,7 +13,7 @@ const AboutPage = () => {
       <Header />
       
       {/* SECTION 1 - HERO: Full-width image with text overlay */}
-      <section className="relative h-screen w-full overflow-hidden">
+      <section className="relative h-screen w-full overflow-hidden pt-0">
         {/* Full-bleed background image */}
         <div 
           className="absolute inset-0 bg-cover bg-center"
@@ -31,9 +31,6 @@ const AboutPage = () => {
             transition={{ duration: 1, delay: 0.3 }}
             className="text-center"
           >
-            <p className="text-white text-xl md:text-2xl font-light tracking-[0.3em] uppercase">
-              Parallel Past
-            </p>
           </motion.div>
 
           {/* Bottom headline - lower third */}
