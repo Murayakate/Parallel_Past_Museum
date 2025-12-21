@@ -7,12 +7,13 @@ export default {
   theme: {
     extend: {
       colors: {
-        sage: '#BCD4CC',
-        'sage-dark': '#A3BCB4',
-        prussian: '#002F45',
-        'prussian-light': '#004A6E',
-        gold: '#E3A500',
-        'gold-hover': '#C79100',
+        sage: '#ECF4F7',
+        'sage-dark': '#D9E7EC',
+        'sage-light': '#F5F9FA',
+        prussian: '#910029',
+        'prussian-light': '#B8003A',
+        gold: '#39404B',
+        'gold-hover': '#2A2F38',
       },
       fontFamily: {
         heading: ['Merriweather', 'serif'],

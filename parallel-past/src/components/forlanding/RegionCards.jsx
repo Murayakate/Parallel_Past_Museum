@@ -1,14 +1,17 @@
 import React from 'react';
+import europeicon from '../../assets/europe icon.png';
+import asiaicon from '../../assets/asia icon.png';
+import  middleeasticon from '../../assets/middleeast icon.png';
 
 const RegionCards = () => {
   return (
     <section className="max-w-7xl mx-auto px-4">
-      <div className="grid grid-cols-3 gap-8">
+      <div className="grid grid-cols-1 md:grid-cols-3 gap-6 md:gap-8 mt-8">
         
         {/* EUROPE CARD */}
-        <div className="bg-white rounded-xl p-8 text-center border-4 border-prussian">
+        <div className="bg-white rounded-xl p-6 md:p-8 text-center border-4 border-prussian">
           <div className="w-20 h-20 mx-auto mb-6 bg-sage rounded-full border-4 border-prussian flex items-center justify-center">
-            🌍
+            <img src={europeicon} alt="europe map icon" />
           </div>
           <h3 className="text-2xl font-heading text-prussian mb-4">
             EUROPE
@@ -19,9 +22,9 @@ const RegionCards = () => {
         </div>
 
         {/* ASIA CARD */}
-        <div className="bg-white rounded-xl p-8 text-center border-4 border-prussian">
+        <div className="bg-white rounded-xl p-6 md:p-8 text-center border-4 border-prussian">
           <div className="w-20 h-20 mx-auto mb-6 bg-sage rounded-full border-4 border-prussian flex items-center justify-center">
-            🌏
+            <img src={asiaicon} alt="asia map icon" />
           </div>
           <h3 className="text-2xl font-heading text-prussian mb-4">
             ASIA
@@ -32,9 +35,9 @@ const RegionCards = () => {
         </div>
 
         {/* MIDDLE EAST CARD */}
-        <div className="bg-white rounded-xl p-8 text-center border-4 border-prussian">
+        <div className="bg-white rounded-xl p-6 md:p-8 text-center border-4 border-prussian">
           <div className="w-20 h-20 mx-auto mb-6 bg-sage rounded-full border-4 border-prussian flex items-center justify-center">
-            🌍
+            <img src={middleeasticon} alt="middleeast map icon" />
           </div>
           <h3 className="text-2xl font-heading text-prussian mb-4">
             MIDDLE EAST

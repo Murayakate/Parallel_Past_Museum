@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Test Met API</title>
+</head>
+<body>
+    <h1>Testing Met Museum API</h1>
+    <div id="results"></div>
+
+    <script>
+        const resultsDiv = document.getElementById('results');
+        
+        async function testAPI() {
+            resultsDiv.innerHTML = '<p>Testing API...</p>';
+            
+            try {
+                // Test 1: Search with department
+                resultsDiv.innerHTML += '<h2>Test 1: Search with department ID 4</h2>';
+                const url1 = 'https://collectionapi.metmuseum.org/public/collection/v1/search?q=helmet&hasImages=true&departmentId=4';
+                resultsDiv.innerHTML += `<p>URL: ${url1}</p>`;
+                
+                const response1 = await fetch(url1);
+                resultsDiv.innerHTML += `<p>Status: ${response1.status}</p>`;
+                
+                if (response1.ok) {
+                    const data1 = await response1.json();
+                    resultsDiv.innerHTML += `<p>Results: ${data1.total} objects found</p>`;
+                    resultsDiv.innerHTML += `<p>First 5 IDs: ${data1.objectIDs?.slice(0, 5).join(', ')}</p>`;
+                } else {
+                    resultsDiv.innerHTML += `<p style="color: red;">Failed: ${response1.statusText}</p>`;
+                }
+                
+                // Test 2: Search without department
+                resultsDiv.innerHTML += '<h2>Test 2: Search without department filter</h2>';
+                const url2 = 'https://collectionapi.metmuseum.org/public/collection/v1/search?q=helmet&hasImages=true';
+                resultsDiv.innerHTML += `<p>URL: ${url2}</p>`;
+                
+                const response2 = await fetch(url2);
+                resultsDiv.innerHTML += `<p>Status: ${response2.status}</p>`;
+                
+                if (response2.ok) {
+                    const data2 = await response2.json();
+                    resultsDiv.innerHTML += `<p>Results: ${data2.total} objects found</p>`;
+                    resultsDiv.innerHTML += `<p>First 5 IDs: ${data2.objectIDs?.slice(0, 5).join(', ')}</p>`;
+                } else {
+                    resultsDiv.innerHTML += `<p style="color: red;">Failed: ${response2.statusText}</p>`;
+                }
+                
+            } catch (error) {
+                resultsDiv.innerHTML += `<p style="color: red;">Error: ${error.message}</p>`;
+            }
+        }
+        
+        testAPI();
+    </script>
+</body>
+</html>

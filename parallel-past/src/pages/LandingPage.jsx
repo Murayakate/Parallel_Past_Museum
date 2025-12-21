@@ -1,7 +1,6 @@
-
 import Header from '../components/Header';
-import Hero from '../components/Hero';
-import RegionCards from '../components/RegionCards';
+import Hero from '../components/forlanding/Hero';
+import RegionCards from '../components/forlanding/RegionCards';
 import Footer from '../components/Footer';
 
 const LandingPage = () => {
