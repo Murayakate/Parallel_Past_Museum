@@ -23,6 +23,9 @@ const Header = () => {
           <Link to="/about" className="text-prussian hover:text-gold font-body">
             About
           </Link>
+          <Link to="/dashboard" className="text-prussian hover:text-gold font-body">
+            Timelines
+          </Link>
           <Link to="/collections" className="text-prussian hover:text-gold font-body">
             Collections
           </Link>

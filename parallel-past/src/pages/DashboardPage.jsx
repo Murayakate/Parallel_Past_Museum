@@ -45,6 +45,7 @@ const DashboardPage = () => {
       {/* Main content area that holds the tri-view grid and the timeline slider. */}
       <main className="flex-1">
         <section className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8 sm:py-10">
+          
           {/* Outer card that visually groups the region grid. */}
           <div className="bg-sage-dark/60 border-4 border-prussian rounded-2xl overflow-hidden">
             {/* Two-column grid: left column for category labels, right for the 3 region columns. */}
@@ -114,6 +115,19 @@ const DashboardPage = () => {
               {HISTORICAL_ERAS.find(e => e.id === selectedEra)?.label || 'Historical Era'}
             </span>
           </p>
+
+          {/* Page Description - Bottom */}
+          <div className="mt-12 text-center max-w-4xl mx-auto">
+            <h2 className="text-2xl sm:text-3xl md:text-4xl font-heading text-prussian mb-4">
+              About Parallel Timelines
+            </h2>
+            <p className="text-base sm:text-lg text-gold/90 font-body leading-relaxed">
+              Compare arms and armor across three civilizations at the same moment in history. 
+              Select an era above to see what warriors in Europe, Asia, and the Middle East 
+              were wearing and wielding simultaneously—revealing how different cultures approached 
+              protection, warfare, and craftsmanship during the same time period.
+            </p>
+          </div>
         </section>
       </main>
 

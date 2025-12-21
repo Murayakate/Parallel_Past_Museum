@@ -11,7 +11,7 @@ const Footer = () => {
           <Link to="/privacy">Privacy Policy</Link>
           <Link to="/terms">Terms of Use</Link>
           <Link to="/contact">Contact Us</Link>
-          <span> 2025 Parallel Past Historical Institute</span>
+          <span> 2025 KM Studio Parallel Past </span>
         </div>
 
         {/* Social Icons */}
