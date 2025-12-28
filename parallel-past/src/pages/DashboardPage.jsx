@@ -38,7 +38,7 @@ const DashboardPage = () => {
     <div className="min-h-screen bg-sage flex flex-col">
       <Header />
 
-      <main className="flex-1">
+      <main className="flex-1 pt-24">
         <section className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8 sm:py-10">
           
           <div className="bg-sage-dark/60 border-4 border-prussian rounded-2xl overflow-hidden">

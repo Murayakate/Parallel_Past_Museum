@@ -21,10 +21,10 @@ const Header = () => {
       className={`fixed top-0 left-0 right-0 z-50 transition-all duration-300 ${
         scrolled 
           ? 'bg-white border-b-4 border-prussian shadow-lg' 
-          : 'bg-transparent border-b-4 border-transparent'
+          : 'bg-prussian border-b-4 border-prussian shadow-md'
       }`}
     >
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 py-3 sm:py-4 flex items-center justify-between">
+      <div className="max-w-7xl mx-auto px-4 sm:px-6 py-2 sm:py-3 flex items-center justify-between">
         
         {/* Logo + Title */}
         <div className="flex items-center gap-2 sm:gap-3">

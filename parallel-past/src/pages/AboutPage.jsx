@@ -13,7 +13,7 @@ const AboutPage = () => {
       <Header />
 
       {/* SECTION 1 - HERO: Full-width image with text overlay */}
-      <section className="relative h-screen w-full overflow-hidden pt-0">
+      <section className="relative h-screen w-full overflow-hidden pt-24">
         {/* Full-bleed background image */}
         <div
           className="absolute inset-0 bg-cover bg-center"

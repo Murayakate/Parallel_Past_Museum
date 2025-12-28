@@ -7,7 +7,7 @@ const LandingPage = () => {
   return (
     <div className="min-h-screen bg-sage">
       <Header />
-      <main className="py-8">
+      <main className="pt-24 pb-8">
         <Hero />
         <RegionCards />
       </main>
