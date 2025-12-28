@@ -1,6 +1,6 @@
 import { motion } from "framer-motion";
-import Header from "../components/Header";
-import Footer from "../components/Footer";
+import Header from "../components/general/Header";
+import Footer from "../components/general/Footer";
 import { ArrowRight } from "lucide-react";
 import aboutHeroBg from "../assets/about-page.jpg";
 import europeArmor from "../assets/europe-armor.jpg";
@@ -225,7 +225,7 @@ const AboutPage = () => {
             whileTap={{ scale: 0.98 }}
             className="inline-flex items-center gap-3 bg-white text-prussian font-heading text-lg md:text-xl px-12 md:px-16 py-5 md:py-6 transition-all hover:bg-sage-light"
           >
-            Launch Dashboard
+            Launch Timelines
             <ArrowRight className="w-5 h-5" />
           </motion.a>
         </motion.div>

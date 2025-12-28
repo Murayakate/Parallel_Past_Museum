@@ -1,15 +1,9 @@
 import React, { useEffect } from 'react';
-import Header from '../components/Header';
-import Footer from '../components/Footer';
+import Header from '../components/general/Header';
+import Footer from '../components/general/Footer';
 import RegionColumn from '../components/fordashboard/RegionColumn';
 import { useDashboardStore } from '../store/useDashboardStore';
-
-// Historical Eras - must match the config in the store
-const HISTORICAL_ERAS = [
-  { id: "golden_age", label: "🛡️ The Golden Age (1500–1600)" },
-  { id: "elegance", label: "💎 The Age of Elegance (1600–1750)" },
-  { id: "empire", label: "🦅 The Empires (1750–1900)" }
-];
+import { HISTORICAL_ERAS } from '../data/historicalEras';
 
 const DashboardPage = () => {
   const {
