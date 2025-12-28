@@ -24,16 +24,16 @@ const Header = () => {
           : 'bg-transparent border-b-4 border-transparent'
       }`}
     >
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 py-4 flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4">
+      <div className="max-w-7xl mx-auto px-4 sm:px-6 py-3 sm:py-4 flex items-center justify-between">
         
         {/* Logo + Title */}
-        <div className="flex items-center gap-3">
-          <div className={`w-12 h-12 rounded-full border-4 transition-colors duration-300 ${
+        <div className="flex items-center gap-2 sm:gap-3">
+          <div className={`w-10 h-10 sm:w-12 sm:h-12 rounded-full border-4 flex items-center justify-center transition-colors duration-300 ${
             scrolled ? 'border-prussian bg-white' : 'border-white bg-transparent'
           }`}>
-            🧭
+            <span className="text-lg sm:text-xl">🧭</span>
           </div>
-          <h1 className={`flex space-x-3 text-xl sm:text-2xl font-heading transition-colors duration-300 ${
+          <h1 className={`text-lg sm:text-xl md:text-2xl font-heading whitespace-nowrap transition-colors duration-300 ${
             scrolled ? 'text-prussian' : 'text-white'
           }`}>
             PARALLEL PAST
@@ -41,33 +41,33 @@ const Header = () => {
         </div>
         
         {/* Nav Links */}
-        <nav className="flex flex-wrap items-center gap-3 sm:gap-6 text-sm sm:text-base">
-          <Link to="/" className={`font-body transition-colors duration-300 ${
+        <nav className="flex items-center gap-2 sm:gap-4 md:gap-6 text-xs sm:text-sm md:text-base">
+          <Link to="/" className={`font-body whitespace-nowrap transition-colors duration-300 ${
             scrolled ? 'text-prussian hover:text-gold' : 'text-white hover:text-sage-light'
           }`}>
             Home
           </Link>
-          <Link to="/about" className={`font-body transition-colors duration-300 ${
+          <Link to="/about" className={`font-body whitespace-nowrap transition-colors duration-300 ${
             scrolled ? 'text-prussian hover:text-gold' : 'text-white hover:text-sage-light'
           }`}>
             About
           </Link>
-          <Link to="/dashboard" className={`font-body transition-colors duration-300 ${
+          <Link to="/dashboard" className={`font-body whitespace-nowrap transition-colors duration-300 ${
             scrolled ? 'text-prussian hover:text-gold' : 'text-white hover:text-sage-light'
           }`}>
             Timelines
           </Link>
-          <Link to="/collections" className={`font-body transition-colors duration-300 ${
+          <Link to="/collections" className={`font-body whitespace-nowrap transition-colors duration-300 ${
             scrolled ? 'text-prussian hover:text-gold' : 'text-white hover:text-sage-light'
           }`}>
             Collections
           </Link>
-          <Link to="/contact" className={`font-body transition-colors duration-300 ${
+          <Link to="/contact" className={`font-body whitespace-nowrap transition-colors duration-300 ${
             scrolled ? 'text-prussian hover:text-gold' : 'text-white hover:text-sage-light'
           }`}>
             Contact
           </Link>
-          <Link to="/login" className={`font-body transition-colors duration-300 ${
+          <Link to="/login" className={`font-body whitespace-nowrap transition-colors duration-300 ${
             scrolled ? 'text-prussian hover:text-gold' : 'text-white hover:text-sage-light'
           }`}>
             Login

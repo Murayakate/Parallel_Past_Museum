@@ -1,8 +1,6 @@
-// Simple helper functions for talking to The Metropolitan Museum of Art Collection API.
-//
-// Official docs: https://metmuseum.github.io
+// these are my helping  functions for talking to The Metropolitan Museum of Art Collection API.
 // Base URL for all endpoints we care about.
-// Using local proxy /api/met to avoid CORS issues
+// Using local proxy /api/met to avoid CORS issues i got.
 const MET_BASE_URL = '/api/met/public/collection/v1';
 
 // Helper: build a full URL from a path and a params object.
@@ -26,7 +24,7 @@ export const searchArmsAndArmor = async ({ query = 'armor', geoLocation = null, 
   const url = buildUrl('/search', {
     q: query,
     hasImages: 'true',
-    departmentId: 4, // CRITICAL: Arms and Armor department - always included
+    departmentId: 4, //this is the official no (4) for the  Arms and Armor department
     geoLocation: geoLocation,
     dateBegin: dateBegin,
     dateEnd: dateEnd

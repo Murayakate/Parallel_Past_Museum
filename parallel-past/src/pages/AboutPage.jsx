@@ -1,25 +1,25 @@
-import { motion } from 'framer-motion';
-import Header from '../components/Header';
-import Footer from '../components/Footer';
-import { ArrowRight } from 'lucide-react';
-import aboutHeroBg from '../assets/about-page.jpg';
-import europeArmor from '../assets/europe-armor.jpg';
-import asiaArmor from '../assets/asia-armor.jpg';
-import middleEastArmor from '../assets/middleeast-armor.jpg';
+import { motion } from "framer-motion";
+import Header from "../components/Header";
+import Footer from "../components/Footer";
+import { ArrowRight } from "lucide-react";
+import aboutHeroBg from "../assets/about-page.jpg";
+import europeArmor from "../assets/europe-armor.jpg";
+import asiaArmor from "../assets/asia-armor.jpg";
+import middleEastArmor from "../assets/middleeast-armor.jpg";
 
 const AboutPage = () => {
   return (
     <div className="min-h-screen bg-white">
       <Header />
-      
+
       {/* SECTION 1 - HERO: Full-width image with text overlay */}
       <section className="relative h-screen w-full overflow-hidden pt-0">
         {/* Full-bleed background image */}
-        <div 
+        <div
           className="absolute inset-0 bg-cover bg-center"
           style={{ backgroundImage: `url(${aboutHeroBg})` }}
         >
-          <div className="absolute inset-0 bg-gradient-to-b from-transparent via-transparent to-black/60" />
+         <div className="absolute inset-0 bg-gradient-to-b from-transparent via-transparent to-black/60" />
         </div>
 
         {/* Text overlays - NO background boxes */}
@@ -30,8 +30,7 @@ const AboutPage = () => {
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 1, delay: 0.3 }}
             className="text-center"
-          >
-          </motion.div>
+          ></motion.div>
 
           {/* Bottom headline - lower third */}
           <motion.div
@@ -41,12 +40,14 @@ const AboutPage = () => {
             className="pb-16"
           >
             <h1 className="text-white text-6xl md:text-8xl lg:text-9xl font-heading leading-none tracking-tight">
-              Three Worlds.<br />
+              Three Worlds.
+              <br />
               One Timeline.
             </h1>
             <p className="text-white/90 text-xl md:text-2xl font-light mt-6 max-w-2xl">
-              History doesn't happen in isolation. See what warriors across Europe, Asia, 
-              and the Middle East were wearing at the exact same moment in time.
+              History doesn't happen in isolation. See what warriors across
+              Europe, Asia, and the Middle East were wearing at the exact same
+              moment in time.
             </p>
           </motion.div>
         </div>
@@ -57,10 +58,10 @@ const AboutPage = () => {
         <div className="max-w-7xl mx-auto px-8 md:px-16">
           <div className="grid grid-cols-2 md:grid-cols-4 gap-8 md:gap-12">
             {[
-              { number: '1500', text: 'Golden Age begins' },
-              { number: '1750', text: 'Age of Empires' },
-              { number: '1900', text: 'Modern era dawns' },
-              { number: '470K+', text: 'Museum artifacts' }
+              { number: "1500", text: "Golden Age begins" },
+              { number: "1750", text: "Age of Empires" },
+              { number: "1900", text: "Modern era dawns" },
+              { number: "470K+", text: "Museum artifacts" },
             ].map((item, idx) => (
               <motion.div
                 key={idx}
@@ -93,12 +94,14 @@ const AboutPage = () => {
           >
             <div className="max-w-xl">
               <h2 className="text-5xl md:text-7xl lg:text-8xl font-heading text-white leading-none mb-8">
-                History.<br />
+                History.
+                <br />
                 Aligned.
               </h2>
               <p className="text-white/80 text-lg md:text-xl font-light leading-relaxed">
-                Weaponry drives technology. Arms and armor reveal the priorities of civilizations—
-                mobility vs. protection, intimidation vs. elegance, individual combat vs. formation warfare.
+                Weaponry drives technology. Arms and armor reveal the priorities
+                of civilizations— mobility vs. protection, intimidation vs.
+                elegance, individual combat vs. formation warfare.
               </p>
             </div>
           </motion.div>
@@ -148,11 +151,13 @@ const AboutPage = () => {
                 Samurai Warriors
               </h3>
               <p className="text-lg md:text-xl text-gold/80 font-light leading-relaxed mb-4">
-                Japanese armor emphasized mobility and intimidation. The kabuto helmet's dramatic crests 
-                signaled rank and clan affiliation on the battlefield.
+                Japanese armor emphasized mobility and intimidation. The kabuto
+                helmet's dramatic crests signaled rank and clan affiliation on
+                the battlefield.
               </p>
               <p className="text-base text-gold/70 font-light">
-                Explore artifacts from the Edo Period and see how samurai culture shaped warfare aesthetics.
+                Explore artifacts from the Edo Period and see how samurai
+                culture shaped warfare aesthetics.
               </p>
             </div>
           </motion.div>
@@ -174,11 +179,13 @@ const AboutPage = () => {
                 Ottoman Empire
               </h3>
               <p className="text-lg md:text-xl text-gold/80 font-light leading-relaxed mb-4">
-                Middle Eastern armor balanced protection with desert climate demands. Intricate metalwork 
-                showcased the empire's artistic mastery.
+                Middle Eastern armor balanced protection with desert climate
+                demands. Intricate metalwork showcased the empire's artistic
+                mastery.
               </p>
               <p className="text-base text-gold/70 font-light">
-                Discover how Ottoman soldiers combined functionality with elaborate decoration.
+                Discover how Ottoman soldiers combined functionality with
+                elaborate decoration.
               </p>
             </div>
             <div className="relative h-[400px] md:h-[500px] order-1 md:order-2">
@@ -204,11 +211,13 @@ const AboutPage = () => {
           className="max-w-5xl mx-auto px-8 md:px-16 text-center"
         >
           <h2 className="text-5xl md:text-7xl lg:text-8xl font-heading text-white mb-8 leading-none">
-            Ready to<br />
+            Ready to
+            <br />
             Explore?
           </h2>
           <p className="text-xl md:text-2xl text-white/70 font-light mb-12 max-w-2xl mx-auto">
-            Step into the parallel timelines and see history unfold across three continents
+            Step into the parallel timelines and see history unfold across three
+            continents
           </p>
           <motion.a
             href="/dashboard"
