@@ -19,18 +19,26 @@ const buildUrl = (path, params = {}) => {
   return url.toString();
 };
 
-// Search for object IDs related to Arms & Armor.
-export const searchArmsAndArmor = async ({ query = 'armor', geoLocation = null, dateBegin = null, dateEnd = null }) => {
+// Search for object IDs with flexible filters
+export const searchMetObjects = async ({ 
+  query = '', 
+  departmentId = null, 
+  geoLocation = null, 
+  dateBegin = null, 
+  dateEnd = null,
+  isHighlight = false // <--- NEW PARAMETER
+}) => {
   const url = buildUrl('/search', {
-    q: query,
+    q: query || '*', // If empty query, search everything (though usually requires other filters)
     hasImages: 'true',
-    departmentId: 4, //this is the official no (4) for the  Arms and Armor department
+    departmentId: departmentId, 
     geoLocation: geoLocation,
     dateBegin: dateBegin,
-    dateEnd: dateEnd
+    dateEnd: dateEnd,
+    isHighlight: isHighlight // <--- Pass it to the API
   });
 
-  console.log('Calling Met API:', url);
+  console.log('Calling Met API (Search):', url);
 
   try {
     const response = await fetch(url);
@@ -41,12 +49,22 @@ export const searchArmsAndArmor = async ({ query = 'armor', geoLocation = null, 
     }
 
     const data = await response.json();
-    console.log(`Met API search response: ${data.total} results for "${query}"`);
     return data;
   } catch (error) {
     console.error('Met API search error:', error);
     return { total: 0, objectIDs: [] };
   }
+};
+
+// Legacy support for specific Arms & Armor search
+export const searchArmsAndArmor = async ({ query = 'armor', geoLocation = null, dateBegin = null, dateEnd = null }) => {
+  return searchMetObjects({
+    query,
+    departmentId: 4, // Arms and Armor
+    geoLocation,
+    dateBegin,
+    dateEnd
+  });
 };
 
 // Fetch full details for a single object ID: title, culture, period, image URL, etc.

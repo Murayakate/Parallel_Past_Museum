@@ -1,6 +1,10 @@
 import React, { useState, useRef, useEffect } from 'react';
 import { motion } from 'framer-motion';
 import { Link } from 'react-router-dom';
+import westLoopMp4 from '../../assets/videos/west-loop.mp4';
+import eastLoopMp4 from '../../assets/videos/east-loop.mp4';
+import westPoster from '../../assets/images/west-poster.jpg';
+import eastPoster from '../../assets/images/east-poster.jpg';
 
 const HeroSplit = () => {
   // State for the split position (percentage)
@@ -40,15 +44,18 @@ const HeroSplit = () => {
       >
         <div className="absolute inset-0 bg-black/40 z-10" /> {/* Overlay for text contrast */}
         <video
-          className="absolute inset-0 w-full h-full object-cover"
+          className="object-cover w-full h-full absolute inset-0"
           autoPlay
           loop
           muted
           playsInline
-          poster="/images/hero-left-poster.jpg"
+          preload="auto"
+          poster={westPoster}
         >
-          <source src="/videos/hero-left-placeholder.webm" type="video/webm" />
-          <source src="/videos/hero-left-placeholder.mp4" type="video/mp4" />
+          {/* Primary source: WebM (Modern browsers) */}
+          <source src="/videos/west-loop.webm" type="video/webm" />
+          {/* Backup source: MP4 (Safari/Compatible) */}
+          <source src={westLoopMp4} type="video/mp4" />
         </video>
         
         {/* Label for West/Left */}
@@ -67,15 +74,18 @@ const HeroSplit = () => {
       >
         <div className="absolute inset-0 bg-black/40 z-10" />
         <video
-          className="absolute inset-0 w-full h-full object-cover"
+          className="object-cover w-full h-full absolute inset-0"
           autoPlay
           loop
           muted
           playsInline
-          poster="/images/hero-right-poster.jpg"
+          preload="auto"
+          poster={eastPoster}
         >
-          <source src="/videos/hero-right-placeholder.webm" type="video/webm" />
-          <source src="/videos/hero-right-placeholder.mp4" type="video/mp4" />
+          {/* Primary source: WebM (Modern browsers) */}
+          <source src="/videos/east-loop.webm" type="video/webm" />
+          {/* Backup source: MP4 (Safari/Compatible) */}
+          <source src={eastLoopMp4} type="video/mp4" />
         </video>
         
         {/* Label for East/Right */}
@@ -89,8 +99,8 @@ const HeroSplit = () => {
 
       {/* CENTER TITLE OVERLAY */}
       <div className="absolute inset-0 flex items-center justify-center pointer-events-none z-30 mix-blend-difference">
-        <h1 className="text-white font-heading text-6xl md:text-8xl lg:text-9xl tracking-tighter text-center leading-none">
-          PARALLEL<br />PAST
+        <h1 className="text-white font-heading text-4xl md:text-6xl lg:text-7xl tracking-tighter text-center leading-none">
+          EXPLORE HISTORY<br />SIDE BY SIDE
         </h1>
       </div>
 

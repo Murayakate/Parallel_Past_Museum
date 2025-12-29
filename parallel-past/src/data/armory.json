@@ -6,6 +6,8 @@
     "category": "battlefield",
     "region": "Europe",
     "date": "1549",
+    "objectBeginDate": 1549,
+    "medium": "Steel, gold, brass",
     "size": "large"
   },
   {
@@ -15,6 +17,8 @@
     "category": "court",
     "region": "France",
     "date": "ca. 1770–80",
+    "objectBeginDate": 1770,
+    "medium": "Steel, silver, gold, wood",
     "size": "small"
   },
   {
@@ -24,6 +28,8 @@
     "category": "duel",
     "region": "India",
     "date": "18th century",
+    "objectBeginDate": 1700,
+    "medium": "Steel, jade, gold, rubies",
     "size": "medium"
   },
   {
@@ -33,6 +39,8 @@
     "category": "battlefield",
     "region": "Germany",
     "date": "ca. 1480",
+    "objectBeginDate": 1480,
+    "medium": "Steel, leather",
     "size": "medium"
   },
   {

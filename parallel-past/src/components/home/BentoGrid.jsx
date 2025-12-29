@@ -1,8 +1,8 @@
 import React from 'react';
 import { motion } from 'framer-motion';
 import { Link } from 'react-router-dom';
-import europeArmor from '../../assets/europe-armor.jpg';
-import asiaArmor from '../../assets/asia-armor.jpg';
+import europeArmor from '../../assets/images/europe-armor.jpg';
+import asiaArmor from '../../assets/images/asia-armor.jpg';
 
 const BentoGrid = () => {
   return (

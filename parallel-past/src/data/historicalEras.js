@@ -2,6 +2,8 @@ export const HISTORICAL_ERAS = [
   {
     id: "golden_age",
     label: "🛡️ The Golden Age (1500–1600)",
+    dateBegin: 1500,
+    dateEnd: 1600,
     strategy: "curated",
     artifacts: {
       armor: { 
@@ -19,6 +21,8 @@ export const HISTORICAL_ERAS = [
   {
     id: "elegance",
     label: "💎 The Age of Elegance (1600–1750)",
+    dateBegin: 1600,
+    dateEnd: 1750,
     strategy: "curated",
     artifacts: {
       armor: { 
@@ -36,6 +40,8 @@ export const HISTORICAL_ERAS = [
   {
     id: "empire",
     label: "🦅 The Empires (1750–1900)",
+    dateBegin: 1750,
+    dateEnd: 1900,
     strategy: "curated",
     artifacts: {
       armor: { 

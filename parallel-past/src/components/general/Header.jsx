@@ -1,8 +1,10 @@
-import { Link } from 'react-router-dom';
+import { Link, useLocation } from 'react-router-dom';
 import { useState, useEffect } from 'react';
+import { motion } from 'framer-motion';
 
 const Header = () => {
   const [scrolled, setScrolled] = useState(false);
+  const location = useLocation();
 
   useEffect(() => {
     const handleScroll = () => {
@@ -16,6 +18,15 @@ const Header = () => {
     return () => window.removeEventListener('scroll', handleScroll);
   }, [scrolled]);
 
+  const navLinks = [
+    { path: '/', label: 'Home' },
+    { path: '/about', label: 'About' },
+    { path: '/dashboard', label: 'Timelines' },
+    { path: '/collections', label: 'Collections' },
+    { path: '/contact', label: 'Contact' },
+    { path: '/login', label: 'Login' }
+  ];
+
   return (
     <header 
       className={`fixed top-0 left-0 right-0 z-50 transition-all duration-300 ${
@@ -27,51 +38,47 @@ const Header = () => {
       <div className="max-w-7xl mx-auto px-4 sm:px-6 py-2 sm:py-3 flex items-center justify-between">
         
         {/* Logo + Title */}
-        <div className="flex items-center gap-2 sm:gap-3">
+        <Link to="/" className="flex items-center gap-2 sm:gap-3 group">
           <div className={`w-10 h-10 sm:w-12 sm:h-12 rounded-full border-4 flex items-center justify-center transition-colors duration-300 ${
             scrolled ? 'border-prussian bg-white' : 'border-white bg-transparent'
           }`}>
-            <span className="text-lg sm:text-xl">🧭</span>
+            <span className="text-lg sm:text-xl group-hover:scale-110 transition-transform duration-300">🧭</span>
           </div>
           <h1 className={`text-lg sm:text-xl md:text-2xl font-heading whitespace-nowrap transition-colors duration-300 ${
             scrolled ? 'text-prussian' : 'text-white'
           }`}>
             PARALLEL PAST
           </h1>
-        </div>
+        </Link>
         
         {/* Nav Links */}
         <nav className="flex items-center gap-2 sm:gap-4 md:gap-6 text-xs sm:text-sm md:text-base">
-          <Link to="/" className={`font-body whitespace-nowrap transition-colors duration-300 ${
-            scrolled ? 'text-prussian hover:text-gold' : 'text-white hover:text-sage-light'
-          }`}>
-            Home
-          </Link>
-          <Link to="/about" className={`font-body whitespace-nowrap transition-colors duration-300 ${
-            scrolled ? 'text-prussian hover:text-gold' : 'text-white hover:text-sage-light'
-          }`}>
-            About
-          </Link>
-          <Link to="/dashboard" className={`font-body whitespace-nowrap transition-colors duration-300 ${
-            scrolled ? 'text-prussian hover:text-gold' : 'text-white hover:text-sage-light'
-          }`}>
-            Timelines
-          </Link>
-          <Link to="/collections" className={`font-body whitespace-nowrap transition-colors duration-300 ${
-            scrolled ? 'text-prussian hover:text-gold' : 'text-white hover:text-sage-light'
-          }`}>
-            Collections
-          </Link>
-          <Link to="/contact" className={`font-body whitespace-nowrap transition-colors duration-300 ${
-            scrolled ? 'text-prussian hover:text-gold' : 'text-white hover:text-sage-light'
-          }`}>
-            Contact
-          </Link>
-          <Link to="/login" className={`font-body whitespace-nowrap transition-colors duration-300 ${
-            scrolled ? 'text-prussian hover:text-gold' : 'text-white hover:text-sage-light'
-          }`}>
-            Login
-          </Link>
+          {navLinks.map((link) => (
+            <Link 
+              key={link.path}
+              to={link.path} 
+              className="relative py-1"
+            >
+              <span className={`relative z-10 font-body whitespace-nowrap transition-colors duration-300 ${
+                scrolled 
+                  ? location.pathname === link.path ? 'text-prussian font-bold' : 'text-prussian/70 hover:text-gold' 
+                  : location.pathname === link.path ? 'text-white font-bold' : 'text-white/80 hover:text-sage-light'
+              }`}>
+                {link.label}
+              </span>
+              
+              {location.pathname === link.path && (
+                <motion.div
+                  layoutId="activeTab"
+                  className={`absolute left-0 right-0 bottom-0 h-0.5 ${
+                    scrolled ? 'bg-prussian' : 'bg-gold'
+                  }`}
+                  initial={false}
+                  transition={{ type: "spring", stiffness: 500, damping: 30 }}
+                />
+              )}
+            </Link>
+          ))}
         </nav>
       </div>
     </header>

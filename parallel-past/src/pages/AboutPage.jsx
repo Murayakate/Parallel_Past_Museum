@@ -2,10 +2,10 @@ import { motion } from "framer-motion";
 import Header from "../components/general/Header";
 import Footer from "../components/general/Footer";
 import { ArrowRight } from "lucide-react";
-import aboutHeroBg from "../assets/about-page.jpg";
-import europeArmor from "../assets/europe-armor.jpg";
-import asiaArmor from "../assets/asia-armor.jpg";
-import middleEastArmor from "../assets/middleeast-armor.jpg";
+import aboutHeroBg from "../assets/images/about-page.jpg";
+import europeArmor from "../assets/images/europe-armor.jpg";
+import asiaArmor from "../assets/images/asia-armor.jpg";
+import middleEastArmor from "../assets/images/middleeast-armor.jpg";
 
 const AboutPage = () => {
   return (
