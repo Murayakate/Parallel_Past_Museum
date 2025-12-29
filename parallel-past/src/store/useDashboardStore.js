@@ -84,35 +84,45 @@ const useDashboardStore = create((set, get) => ({
         );
       } 
       // CONDITION B: BROWSE MODE (Specific Search)
-      // Ignore Era Dropdown dates. Fetch best matching result for search term.
       else {
         fetchPromises = regions.map(async (region) => {
           try {
             let apiGeoLocation = region;
-            if (region === 'Asia') apiGeoLocation = 'Asia'; 
-
+            if (region === 'Asia') apiGeoLocation = 'China|Japan'; // specific fix for API
+            
+            // 1. Search with isHighlight=true to avoid junk fragments
             const searchResult = await searchMetObjects({
               query: query, 
               geoLocation: apiGeoLocation, 
-              dateBegin: null, 
-              dateEnd: null,   
-              departmentId: null 
+              isHighlight: true 
             });
 
             if (searchResult.total > 0 && searchResult.objectIDs) {
-              const topIds = searchResult.objectIDs.slice(0, 5);
+              // 2. Fetch top 10 candidates (increased from 5 to find better matches)
+              const topIds = searchResult.objectIDs.slice(0, 10);
               const detailPromises = topIds.map(id => fetchObjectDetails(id).catch(() => null));
               const candidates = await Promise.all(detailPromises);
               
-              const validItems = candidates.filter(c => c && c.primaryImageSmall);
+              // 3. STRICT FILTERING (The Fix)
+              const validItems = candidates.filter(item => {
+                if (!item || !item.primaryImageSmall) return false;
+
+                // Check: Does the Title or Object Name actually contain the search term?
+                const term = query.toLowerCase();
+                const titleMatch = item.title?.toLowerCase().includes(term);
+                const nameMatch = item.objectName?.toLowerCase().includes(term);
+                
+                // Allow match if either is true
+                return titleMatch || nameMatch;
+              });
               
               if (validItems.length > 0) {
-                 return [
-                   { region, type: 'armor', details: validItems[0] }, 
-                   validItems[1] ? { region, type: 'weapons', details: validItems[1] } : null 
-                 ].filter(Boolean);
+                 // Return the best match. 
+                 // Note: We assign it to 'armor' slot by default to ensure it renders in the main card slot.
+                 return { region, type: 'armor', details: validItems[0] };
               }
             }
+            // If no strict match found, return null (renders empty card instead of wrong item)
             return null;
           } catch (e) {
             console.error(`Search failed for ${region}:`, e);
