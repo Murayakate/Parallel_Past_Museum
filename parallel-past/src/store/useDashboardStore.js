@@ -87,42 +87,33 @@ const useDashboardStore = create((set, get) => ({
       else {
         fetchPromises = regions.map(async (region) => {
           try {
+            // FIX 1: Map "Middle East" to valid MET API countries
             let apiGeoLocation = region;
-            if (region === 'Asia') apiGeoLocation = 'China|Japan'; // specific fix for API
-            
-            // 1. Search with isHighlight=true to avoid junk fragments
+            if (region === 'Asia') apiGeoLocation = 'China|Japan';
+            if (region === 'Middle East') apiGeoLocation = 'Iran|Turkey|Egypt|Syria'; // Specific countries required
+
+            // FIX 2: Relaxed Search (No isHighlight, No Strict Title Match)
+            // Trust the MET's search engine to return relevant results for the query.
             const searchResult = await searchMetObjects({
-              query: query, 
-              geoLocation: apiGeoLocation, 
-              isHighlight: true 
+              query: query,
+              geoLocation: apiGeoLocation,
+              isHighlight: false // Turned off to ensure we get results even for obscure items
             });
 
             if (searchResult.total > 0 && searchResult.objectIDs) {
-              // 2. Fetch top 10 candidates (increased from 5 to find better matches)
-              const topIds = searchResult.objectIDs.slice(0, 10);
+              // Fetch top 3 items (Reduced from 10 to prevent Rate Limiting errors)
+              const topIds = searchResult.objectIDs.slice(0, 3);
               const detailPromises = topIds.map(id => fetchObjectDetails(id).catch(() => null));
               const candidates = await Promise.all(detailPromises);
-              
-              // 3. STRICT FILTERING (The Fix)
-              const validItems = candidates.filter(item => {
-                if (!item || !item.primaryImageSmall) return false;
 
-                // Check: Does the Title or Object Name actually contain the search term?
-                const term = query.toLowerCase();
-                const titleMatch = item.title?.toLowerCase().includes(term);
-                const nameMatch = item.objectName?.toLowerCase().includes(term);
-                
-                // Allow match if either is true
-                return titleMatch || nameMatch;
-              });
-              
-              if (validItems.length > 0) {
-                 // Return the best match. 
-                 // Note: We assign it to 'armor' slot by default to ensure it renders in the main card slot.
-                 return { region, type: 'armor', details: validItems[0] };
+              // Just find the first one with an image. 
+              // We removed the "title.includes(query)" check because a "Sallet" is a "Helmet".
+              const validItem = candidates.find(c => c && c.primaryImageSmall);
+
+              if (validItem) {
+                 return { region, type: 'armor', details: validItem };
               }
             }
-            // If no strict match found, return null (renders empty card instead of wrong item)
             return null;
           } catch (e) {
             console.error(`Search failed for ${region}:`, e);

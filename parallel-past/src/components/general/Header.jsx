@@ -1,9 +1,11 @@
 import { Link, useLocation } from 'react-router-dom';
 import { useState, useEffect } from 'react';
-import { motion } from 'framer-motion';
+import { motion, AnimatePresence } from 'framer-motion';
+import { Menu, X } from 'lucide-react';
 
 const Header = () => {
   const [scrolled, setScrolled] = useState(false);
+  const [isMenuOpen, setIsMenuOpen] = useState(false);
   const location = useLocation();
 
   useEffect(() => {
@@ -17,6 +19,11 @@ const Header = () => {
     window.addEventListener('scroll', handleScroll);
     return () => window.removeEventListener('scroll', handleScroll);
   }, [scrolled]);
+
+  // Close menu on route change
+  useEffect(() => {
+    setIsMenuOpen(false);
+  }, [location]);
 
   const navLinks = [
     { path: '/', label: 'Home' },
@@ -51,8 +58,8 @@ const Header = () => {
           </h1>
         </Link>
         
-        {/* Nav Links */}
-        <nav className="flex items-center gap-2 sm:gap-4 md:gap-6 text-xs sm:text-sm md:text-base">
+        {/* Desktop Nav Links */}
+        <nav className="hidden md:flex items-center gap-6 text-sm md:text-base">
           {navLinks.map((link) => (
             <Link 
               key={link.path}
@@ -80,6 +87,49 @@ const Header = () => {
             </Link>
           ))}
         </nav>
+
+        {/* Mobile Menu Button */}
+        <button 
+          className="md:hidden p-2 z-50 relative"
+          onClick={() => setIsMenuOpen(!isMenuOpen)}
+        >
+          {isMenuOpen ? (
+            <X className={`w-6 h-6 ${scrolled ? 'text-prussian' : 'text-white'}`} />
+          ) : (
+            <Menu className={`w-6 h-6 ${scrolled ? 'text-prussian' : 'text-white'}`} />
+          )}
+        </button>
+
+        {/* Mobile Menu Panel */}
+        <AnimatePresence>
+          {isMenuOpen && (
+            <motion.div
+              initial={{ opacity: 0, y: '-100%' }}
+              animate={{ opacity: 1, y: 0 }}
+              exit={{ opacity: 0, y: '-100%' }}
+              transition={{ type: "spring", damping: 25, stiffness: 200 }}
+              className={`absolute top-full left-0 right-0 z-40 md:hidden shadow-lg ${
+                scrolled ? 'bg-white' : 'bg-prussian'
+              }`}
+            >
+              <nav className="flex flex-col py-4 px-4 sm:px-6">
+                {navLinks.map((link) => (
+                  <Link 
+                    key={link.path}
+                    to={link.path} 
+                    className={`py-3 text-base font-body border-b ${
+                      scrolled 
+                        ? 'border-prussian/10 text-prussian hover:text-gold' 
+                        : 'border-white/10 text-white/90 hover:text-sage-light'
+                    } ${location.pathname === link.path ? 'font-bold' : ''}`}
+                  >
+                    {link.label}
+                  </Link>
+                ))}
+              </nav>
+            </motion.div>
+          )}
+        </AnimatePresence>
       </div>
     </header>
   );
