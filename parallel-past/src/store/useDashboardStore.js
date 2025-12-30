@@ -10,7 +10,12 @@ const useDashboardStore = create((set, get) => ({
   // Narrative content from config
   narrativeTitle: '',
   narrativeSummary: '',
+  narrativeInsights: '',
   
+  // Curate / Saved Items
+  savedItems: [],
+  isDrawerOpen: false,
+
   artifactsByRegion: {
     Europe: { armor: null, weapon: null },
     Asia: { armor: null, weapon: null },
@@ -22,6 +27,35 @@ const useDashboardStore = create((set, get) => ({
   currentFetchId: null,
 
   // Actions
+  toggleDrawer: () => set(state => ({ isDrawerOpen: !state.isDrawerOpen })),
+  
+  toggleSavedItem: (item) => {
+    set(state => {
+      const exists = state.savedItems.find(i => i.id === item.id);
+      let newItems;
+      if (exists) {
+        newItems = state.savedItems.filter(i => i.id !== item.id);
+      } else {
+        newItems = [...state.savedItems, item];
+      }
+      // Persist
+      localStorage.setItem('parallel_past_saved', JSON.stringify(newItems));
+      return { savedItems: newItems };
+    });
+  },
+
+  // Load saved items from local storage
+  initializeSavedItems: () => {
+    const saved = localStorage.getItem('parallel_past_saved');
+    if (saved) {
+      try {
+        set({ savedItems: JSON.parse(saved) });
+      } catch (e) {
+        console.error('Failed to parse saved items', e);
+      }
+    }
+  },
+
   setSelectedEra: (eraId) => {
     const fetchId = Date.now();
     set({ selectedEra: eraId, currentFetchId: fetchId, isLoading: true, error: null });
@@ -61,7 +95,8 @@ const useDashboardStore = create((set, get) => ({
     // 2. Immediately update narrative text
     set({
       narrativeTitle: narrativeConfig.title,
-      narrativeSummary: narrativeConfig.summary
+      narrativeSummary: narrativeConfig.summary,
+      narrativeInsights: narrativeConfig.insights || narrativeConfig.summary
     });
 
     // 3. Execute parallel ID fetches for each region

@@ -4,6 +4,8 @@ import LandingPage from './pages/LandingPage';
 import DashboardPage from './pages/DashboardPage';
 import AboutPage from './pages/AboutPage';
 import CollectionsPage from './pages/CollectionsPage';
+import ContactPage from './pages/ContactPage';
+import LoginPage from './pages/LoginPage';
 import './index.css';
 
 function App() {
@@ -14,8 +16,8 @@ function App() {
         <Route path="/dashboard" element={<DashboardPage />} />
         <Route path="/about" element={<AboutPage />} />
         <Route path="/collections" element={<CollectionsPage />} />
-        <Route path="/contact" element={<div>Contact Page</div>} />
-        <Route path="/login" element={<div>Login Page</div>} />
+        <Route path="/contact" element={<ContactPage />} />
+        <Route path="/login" element={<LoginPage />} />
       </Routes>
     </Router>
   );

@@ -17,6 +17,7 @@ const DashboardPage = () => {
     fetchArtifacts,
     narrativeTitle,
     narrativeSummary,
+    narrativeInsights, // Use specific editorial insights
   } = useDashboardStore();
 
   // Fetch artifacts on initial load
@@ -44,31 +45,34 @@ const DashboardPage = () => {
       <main className="flex-1 pt-24">
         <section className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8 sm:py-10">
           
-          {/* Narrative Section */}
+          {/* Editorial Insights Section */}
           {narrativeTitle && (
-            <div className="mb-10 bg-prussian border-4 border-gold/80 rounded-xl p-8 shadow-2xl relative overflow-hidden group">
-              {/* Decorative background element */}
-              <div className="absolute top-0 right-0 w-32 h-32 bg-gold/5 rounded-full blur-3xl -translate-y-1/2 translate-x-1/2"></div>
-              
-              <h2 className="text-2xl sm:text-3xl md:text-4xl font-heading text-gold mb-6 text-center tracking-wide drop-shadow-sm">
-                {narrativeTitle}
-              </h2>
-              <div className="max-w-4xl mx-auto">
-                <p className="text-base sm:text-lg text-white font-body leading-loose text-justify border-l-4 border-gold/30 pl-6">
-                  {narrativeSummary}
-                </p>
-              </div>
+            <div className="mb-12 bg-[#F9F8F4] border-t-4 border-prussian shadow-xl p-8 sm:p-12 relative overflow-hidden group">
+               {/* Elegant Header */}
+               <div className="text-center mb-8">
+                 <h2 className="text-3xl sm:text-4xl md:text-5xl font-serif text-prussian mb-2 tracking-tight">
+                   {narrativeTitle}
+                 </h2>
+                 <div className="w-24 h-1 bg-gold/20 mx-auto"></div>
+               </div>
+
+               {/* Editorial Content with Drop Cap */}
+               <div className="max-w-3xl mx-auto">
+                 <p className="text-base sm:text-lg text-gray-700 font-sans leading-relaxed text-justify first-letter:float-left first-letter:text-7xl first-letter:font-serif first-letter:text-prussian first-letter:mr-3 first-letter:leading-none first-letter:mt-2">
+                   {narrativeInsights || narrativeSummary}
+                 </p>
+               </div>
             </div>
           )}
 
           <div className="bg-sage-dark/60 border-4 border-prussian rounded-2xl overflow-hidden">
-            <div className="grid grid-cols-[auto,1fr]">
-              <div className="bg-sage/60 border-r-4 border-prussian px-4 sm:px-6 py-6 flex flex-col justify-center text-left text-xs sm:text-sm font-heading text-prussian tracking-wide">
+            <div className="grid grid-cols-1 md:grid-cols-[auto,1fr]">
+              <div className="hidden md:flex bg-sage/60 border-r-4 border-prussian px-4 sm:px-6 py-6 flex-col justify-center text-left text-xs sm:text-sm font-heading text-prussian tracking-wide">
                 <span>ARTIFACTS</span>
               </div>
 
               <div className="px-4 sm:px-6 py-6 bg-sage-light/70">
-                <div className="grid grid-cols-1 md:grid-cols-3 gap-6 md:gap-8 h-full">
+                <div className="grid grid-cols-1 md:grid-cols-3 gap-8 md:gap-8 h-full">
                   {Object.entries(artifactsByRegion).map(([regionName, data]) => (
                     <RegionColumn
                       key={regionName}

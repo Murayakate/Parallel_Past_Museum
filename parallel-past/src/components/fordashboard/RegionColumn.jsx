@@ -38,6 +38,8 @@ const RegionColumn = ({ regionName, armorArtifact }) => {
       {/* Single large artifact card for armor. */}
       <div className="flex-1">
         <ArtifactCard
+          id={armorArtifact?.id}
+          data={armorArtifact}
           title={armorArtifact?.title || 'Unknown Artifact'}
           subtitle={armorArtifact?.subtitle || 'Details unavailable'}
           description={armorArtifact?.description || 'No description available'}
