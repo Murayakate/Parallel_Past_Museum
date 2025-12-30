@@ -5,10 +5,7 @@ import ArtifactCard from './ArtifactCard';
 //
 // Props:
 // - regionName: label shown in the header at the top of the column
-// - armorArtifact: data for the top row (armor-related object)
-// - weaponArtifact: data for the bottom row (sword / weapon object)
-//
-// This component stays simple on purpose: it now focuses purely on Armor.
+// - armorArtifact: data for the artifact displayed in this column
 const RegionColumn = ({ regionName, armorArtifact }) => {
   // CRITICAL NULL CHECK: Prevent "Cannot read properties of null" crash
   if (!armorArtifact) {
@@ -43,10 +40,8 @@ const RegionColumn = ({ regionName, armorArtifact }) => {
           title={armorArtifact?.title || 'Unknown Artifact'}
           subtitle={armorArtifact?.subtitle || 'Details unavailable'}
           description={armorArtifact?.description || 'No description available'}
-          ctaLabel={armorArtifact?.ctaLabel}
           imageUrl={armorArtifact?.imageUrl}
           objectUrl={armorArtifact?.objectUrl}
-          isLarge={true} // Hint to make it bigger
         />
       </div>
     </div>

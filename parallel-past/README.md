@@ -4,11 +4,14 @@ A React-based web application that allows users to explore and compare historica
 
 > *"History doesn't happen in isolation. See what warriors across Europe, Asia, and the Middle East were wearing at the exact same moment in time."*
 
----
+
 
 ## 🎯 Project Overview
 
 **Parallel Past Museum** is an interactive historical comparison tool that visualizes how different cultures expressed similar themes—warfare, fashion, daily life—during the same time periods. Users can select from historical eras and topics, then view curated artifacts side-by-side in a tri-region dashboard with editorial narrative insights.
+
+artifacts are intentionally curated using selected met object ids to ensure historical accuracy, availability of images,and meaningful comparison across regions and eras.raw api search results were too inconsistent and yielded too many irrelevant results for comparative analysis.
+
 
 ### Key Features Implemented
 - ✅ **Landing Page** with cinematic video hero, parallax effects, and chiaroscuro design

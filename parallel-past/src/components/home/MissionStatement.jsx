@@ -1,34 +1,11 @@
 import React, { useRef } from 'react';
-import { motion, useScroll, useTransform } from 'framer-motion';
-import heroImage from '../../assets/images/hero-image-1.webp';
+import { motion } from 'framer-motion';
 
 const MissionStatement = () => {
   const ref = useRef(null);
-  const { scrollYProgress } = useScroll({
-    target: ref,
-    offset: ["start end", "end start"]
-  });
-
-  const y = useTransform(scrollYProgress, [0, 1], ["-20%", "20%"]);
-  const opacity = useTransform(scrollYProgress, [0, 0.5, 1], [0.6, 1, 0.6]);
 
   return (
-    <section ref={ref} className="relative py-24 sm:py-32 px-6 lg:px-8 overflow-hidden min-h-[60vh] md:min-h-[80vh] flex items-center justify-center">
-      {/* Parallax Background Image */}
-      <div className="absolute inset-0 z-0">
-        <motion.div 
-          style={{ y, scale: 1.1 }}
-          className="w-full h-full"
-        >
-          <img 
-            src={heroImage} 
-            alt="Historical artifact detail" 
-            className="w-full h-full object-cover opacity-40"
-          />
-        </motion.div>
-        <div className="absolute inset-0 bg-gradient-to-b from-gray-900 via-black/80 to-black z-10" />
-      </div>
-
+    <section ref={ref} className="relative py-24 sm:py-32 px-6 lg:px-8 overflow-hidden min-h-[60vh] md:min-h-[80vh] flex items-center justify-center bg-gradient-to-b from-gray-900 via-black to-black">
       {/* Vertical Line Connector */}
       <div className="absolute left-1/2 -translate-x-1/2 top-0 bottom-0 w-px bg-prussian/30 z-20"></div>
       

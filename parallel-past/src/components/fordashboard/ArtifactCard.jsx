@@ -4,7 +4,7 @@ import { useDashboardStore } from '../../store/useDashboardStore';
 
 
 //got design from inspiration of  magazine at drizzle 
-const ArtifactCard = ({ id, data, title, subtitle, description, ctaLabel, imageUrl, objectUrl }) => {
+const ArtifactCard = ({ id, data, title, subtitle, description, imageUrl, objectUrl }) => {
   const { savedItems, toggleSavedItem } = useDashboardStore();
   const isSaved = savedItems.some(item => item.id === id);
 
