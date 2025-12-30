@@ -15,6 +15,8 @@ const DashboardPage = () => {
     isLoading,
     error,
     fetchArtifacts,
+    narrativeTitle,
+    narrativeSummary,
   } = useDashboardStore();
 
   // Fetch artifacts on initial load
@@ -42,6 +44,23 @@ const DashboardPage = () => {
       <main className="flex-1 pt-24">
         <section className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8 sm:py-10">
           
+          {/* Narrative Section */}
+          {narrativeTitle && (
+            <div className="mb-10 bg-prussian border-4 border-gold/80 rounded-xl p-8 shadow-2xl relative overflow-hidden group">
+              {/* Decorative background element */}
+              <div className="absolute top-0 right-0 w-32 h-32 bg-gold/5 rounded-full blur-3xl -translate-y-1/2 translate-x-1/2"></div>
+              
+              <h2 className="text-2xl sm:text-3xl md:text-4xl font-heading text-gold mb-6 text-center tracking-wide drop-shadow-sm">
+                {narrativeTitle}
+              </h2>
+              <div className="max-w-4xl mx-auto">
+                <p className="text-base sm:text-lg text-white font-body leading-loose text-justify border-l-4 border-gold/30 pl-6">
+                  {narrativeSummary}
+                </p>
+              </div>
+            </div>
+          )}
+
           <div className="bg-sage-dark/60 border-4 border-prussian rounded-2xl overflow-hidden">
             <div className="grid grid-cols-[auto,1fr]">
               <div className="bg-sage/60 border-r-4 border-prussian px-4 sm:px-6 py-6 flex flex-col justify-center text-left text-xs sm:text-sm font-heading text-prussian tracking-wide">
@@ -145,11 +164,11 @@ const DashboardPage = () => {
           {/* Page Description */}
           <div className="mt-12 text-center max-w-4xl mx-auto">
             <h2 className="text-2xl sm:text-3xl md:text-4xl font-heading text-prussian mb-4">
-              Topic Explorer
+              Parallel Past Explorer
             </h2>
             <p className="text-base sm:text-lg text-gold/90 font-body leading-relaxed">
-              Compare artifacts across three civilizations at the same moment in history. 
-              Select a topic and era to see what different cultures were creating simultaneously.
+              Discover how three great civilizations expressed the same themes differently. 
+              Select an era and topic above to explore curated artifacts and historical context.
             </p>
           </div>
         </section>
