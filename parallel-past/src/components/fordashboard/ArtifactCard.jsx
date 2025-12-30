@@ -2,8 +2,8 @@ import React from 'react';
 import { Heart } from 'lucide-react';
 import { useDashboardStore } from '../../store/useDashboardStore';
 
-// Editorial Style Artifact Card
-// Designed to look like a high-end museum guide or travel magazine.
+
+//got design from inspiration of  magazine at drizzle 
 const ArtifactCard = ({ id, data, title, subtitle, description, ctaLabel, imageUrl, objectUrl }) => {
   const { savedItems, toggleSavedItem } = useDashboardStore();
   const isSaved = savedItems.some(item => item.id === id);

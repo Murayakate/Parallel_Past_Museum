@@ -8,7 +8,7 @@ const SynthesisPanel = ({ items }) => {
     return items ? items.slice(0, 3).filter(item => item) : [];
   }, [items]);
 
-  // Don't render if we don't have enough data for a meaningful comparison (at least 2)
+  // Don't render if we don't have enough data for a meaningful comparison LIKE TWO OF THEM
   if (validItems.length < 2) return null;
 
   // LOGIC: Material Divergence
@@ -58,12 +58,12 @@ const SynthesisPanel = ({ items }) => {
     >
       <div className="bg-slate-950 border border-slate-800 rounded-xl overflow-hidden shadow-2xl relative group">
         
-        {/* Decorative Top Line */}
+        {/* THE Decorative Top Line */}
         <div className="absolute top-0 left-0 right-0 h-1 bg-gradient-to-r from-blue-500 via-purple-500 to-pink-500 opacity-70"></div>
 
         <div className="p-6 md:p-8 grid grid-cols-1 md:grid-cols-3 gap-8 items-center">
           
-          {/* HEADER: Technical "HUD" feel */}
+          {/* HEADER:THAT  Technical "HUD" feel */}
           <div className="col-span-1 border-b md:border-b-0 md:border-r border-slate-800/50 pb-6 md:pb-0 md:pr-6">
             <div className="flex items-center gap-3 mb-2">
               <div className="p-2 bg-slate-900 rounded-lg border border-slate-700">
