@@ -1,16 +1,18 @@
 import { create } from 'zustand';
 import { fetchObjectDetails, searchMetObjects } from '../api/metApi';
-import { HISTORICAL_ERAS } from '../data/historicalEras';
+import { HISTORICAL_ERAS, TOPICS } from '../data/config';
 
 const useDashboardStore = create((set, get) => ({
   // State
-  selectedEra: "golden_age",
-  searchQuery: "", 
+  selectedEra: 'renaissance', // Default Era
+  selectedTopic: 'warfare',   // Default Topic (Replaces searchQuery)
+  
   artifactsByRegion: {
     Europe: { armor: null, weapon: null },
     Asia: { armor: null, weapon: null },
     'Middle East': { armor: null, weapon: null }
   },
+  
   isLoading: false,
   error: null,
   currentFetchId: null,
@@ -18,152 +20,141 @@ const useDashboardStore = create((set, get) => ({
   // Actions
   setSelectedEra: (eraId) => {
     const fetchId = Date.now();
-    
-    set({ 
-      selectedEra: eraId,
-      currentFetchId: fetchId,
-      isLoading: true,
-      error: null
-    });
-    
-    get().fetchArtifactsForEra(eraId, get().searchQuery, fetchId);
+    set({ selectedEra: eraId, currentFetchId: fetchId, isLoading: true, error: null });
+    get().fetchArtifactsForEra(eraId, get().selectedTopic, fetchId);
   },
 
-  setSearchQuery: (query) => {
+  setSelectedTopic: (topicId) => {
     const fetchId = Date.now();
-    set({ 
-      searchQuery: query,
-      currentFetchId: fetchId,
-      isLoading: true,
-      error: null
-    });
-    get().fetchArtifactsForEra(get().selectedEra, query, fetchId);
+    set({ selectedTopic: topicId, currentFetchId: fetchId, isLoading: true, error: null });
+    get().fetchArtifactsForEra(get().selectedEra, topicId, fetchId);
   },
 
-  // Fetch artifacts based on Era and Search Query
-  fetchArtifactsForEra: async (eraId, query = "", fetchId = null) => {
-    const era = HISTORICAL_ERAS.find(e => e.id === eraId);
-    if (!era) {
-      console.error(`Era not found: ${eraId}`);
-      set({ error: `Configuration error: Era "${eraId}" not found`, isLoading: false });
-      return;
-    }
+  // THE ENGINE: Unified Fetch Logic with Keyword Injection Strategy
+  fetchArtifactsForEra: async (eraId, topicId, fetchId) => {
+    // 1. Resolve Configs (Safety Check)
+    const era = HISTORICAL_ERAS.find(e => e.id === eraId) || HISTORICAL_ERAS[0];
+    const topic = TOPICS.find(t => t.id === topicId) || TOPICS[0];
+    
+    // Prevent stale requests overwriting new ones
+    if (!fetchId) fetchId = get().currentFetchId;
 
-    if (!get().isLoading) {
-      set({ isLoading: true, error: null });
-    }
+    console.log(`🚀 Fetching: [${era.label}] + [${topic.label}]`);
 
-    try {
-      const regions = ['Europe', 'Asia', 'Middle East'];
-      const types = ['armor', 'weapons']; 
-      
-      console.log(`🔍 Fetching for era: ${era.label} | Query: "${query}" | (fetchId: ${fetchId})`);
+    const regions = ['Europe', 'Asia', 'Middle East'];
 
-      let fetchPromises;
+    const fetchPromises = regions.map(async (region) => {
+      try {
+        // 2. Define Region Keywords (The "Keyword Injection" Strategy)
+        // Replaces strict geoLocation filtering
+        let regionKeyword = region;
+        if (region === 'Asia') regionKeyword = 'China'; // "China" has the largest dataset
+        if (region === 'Middle East') regionKeyword = 'Islamic'; // Covers Ottoman, Persian, Arab
+        if (region === 'Europe') regionKeyword = 'Europe';
 
-      // CONDITION A: ERA MODE (Empty Search)
-      // Fetch random/curated artifacts for the selected years
-      if (!query.trim()) {
-        fetchPromises = types.flatMap(type =>
-          regions.map(region => {
-            const artifactId = era.artifacts[type]?.[region];
-            if (!artifactId) return Promise.resolve(null);
-            
-            return fetchObjectDetails(artifactId)
-              .then(details => {
-                if (details?.primaryImageSmall) {
-                  return { region, type, details };
-                }
-                return null;
-              })
-              .catch(err => {
-                console.error(`❌ Failed to fetch curated ${region} ${type}:`, err);
-                return null;
-              });
-          })
-        );
-      } 
-      // CONDITION B: BROWSE MODE (Specific Search)
-      else {
-        fetchPromises = regions.map(async (region) => {
-          try {
-            // FIX 1: Map "Middle East" to valid MET API countries
-            let apiGeoLocation = region;
-            if (region === 'Asia') apiGeoLocation = 'China|Japan';
-            if (region === 'Middle East') apiGeoLocation = 'Iran|Turkey|Egypt|Syria'; // Specific countries required
+        // Common API parameters (No geoLocation)
+        const baseParams = {
+          departmentId: topic.apiParams.departmentId || null,
+          dateBegin: era.dateBegin,
+          dateEnd: era.dateEnd,
+        };
 
-            // FIX 2: Relaxed Search (No isHighlight, No Strict Title Match)
-            // Trust the MET's search engine to return relevant results for the query.
-            const searchResult = await searchMetObjects({
-              query: query,
-              geoLocation: apiGeoLocation,
-              isHighlight: false // Turned off to ensure we get results even for obscure items
-            });
-
-            if (searchResult.total > 0 && searchResult.objectIDs) {
-              // Fetch top 3 items (Reduced from 10 to prevent Rate Limiting errors)
-              const topIds = searchResult.objectIDs.slice(0, 3);
-              const detailPromises = topIds.map(id => fetchObjectDetails(id).catch(() => null));
-              const candidates = await Promise.all(detailPromises);
-
-              // Just find the first one with an image. 
-              // We removed the "title.includes(query)" check because a "Sallet" is a "Helmet".
-              const validItem = candidates.find(c => c && c.primaryImageSmall);
-
-              if (validItem) {
-                 return { region, type: 'armor', details: validItem };
-              }
-            }
-            return null;
-          } catch (e) {
-            console.error(`Search failed for ${region}:`, e);
-            return null;
-          }
+        // --- ATTEMPT 1: The Perfect Match ---
+        // Query: "Topic Region" (e.g. "Furniture Europe")
+        // Filter: Highlight TRUE
+        const querySpecific = `${topic.apiParams.q} ${regionKeyword}`;
+        
+        console.log(`  [${region}] Attempt 1: Perfect Match ("${querySpecific}")`);
+        let searchResult = await searchMetObjects({
+          ...baseParams,
+          query: querySpecific,
+          isHighlight: true 
         });
-      }
-      
-      const rawResults = await Promise.all(fetchPromises);
-      const results = rawResults.flat().filter(Boolean);
-      
-      if (fetchId && get().currentFetchId !== fetchId) {
-        console.log(`⏭️ Discarding stale data for ${fetchId}`);
-        return;
-      }
-      
-      const newArtifacts = {
-        Europe: { armor: null, weapon: null },
-        Asia: { armor: null, weapon: null },
-        'Middle East': { armor: null, weapon: null }
-      };
-      
-      results.forEach(result => {
-        if (result?.details) {
-          const { region, type, details } = result;
-          const artifactType = type === 'weapons' ? 'weapon' : 'armor';
-          
-          newArtifacts[region][artifactType] = {
-            id: details.objectID,
-            title: details.title,
-            subtitle: details.culture || details.country || region,
-            description: details.medium || 'Material details unavailable',
-            ctaLabel: 'View on Met Museum',
-            imageUrl: details.primaryImageSmall,
-            objectUrl: details.objectURL,
-            region,
-            type: artifactType
-          };
+
+        // --- ATTEMPT 2: The Volume Match ---
+        // If Attempt 1 failed -> Same Query
+        // Filter: Highlight FALSE
+        if (!searchResult.objectIDs || searchResult.objectIDs.length === 0) {
+           console.log(`  [${region}] Attempt 2: Volume Match (No Highlight)`);
+           searchResult = await searchMetObjects({
+              ...baseParams,
+              query: querySpecific,
+              isHighlight: false 
+           });
         }
-      });
-      
-      console.log('✅ Artifacts loaded:', newArtifacts);
-      set({ artifactsByRegion: newArtifacts, isLoading: false });
-      
-    } catch (error) {
-      console.error('❌ Failed to fetch artifacts:', error);
-      if (!fetchId || get().currentFetchId === fetchId) {
-        set({ error: 'Failed to load artifacts.', isLoading: false });
+
+        // --- ATTEMPT 3: The Region Backup (Desperation Mode) ---
+        // If Attempt 2 failed -> Query: Just Region (e.g. "Islamic")
+        // Filter: Highlight TRUE (Show best of region)
+        // Goal: "Topic failed, just show me the best stuff from this place."
+        if (!searchResult.objectIDs || searchResult.objectIDs.length === 0) {
+           console.log(`  [${region}] Attempt 3: Region Backup ("${regionKeyword}")`);
+           searchResult = await searchMetObjects({
+              ...baseParams,
+              query: regionKeyword,
+              isHighlight: true 
+           });
+        }
+
+        // 3. Validation Loop (Find the first valid image)
+        if (searchResult.objectIDs && searchResult.objectIDs.length > 0) {
+          // Check the top 5 candidates
+          const topIds = searchResult.objectIDs.slice(0, 5); 
+          const detailsList = await Promise.all(topIds.map(id => fetchObjectDetails(id).catch(() => null)));
+          
+          // Filter for valid items with images
+          const validItem = detailsList.find(item => item && item.primaryImageSmall);
+          
+          if (validItem) {
+             console.log(`  ✅ [${region}] Found: ${validItem.title}`);
+             // CRITICAL MAPPING HACK: 
+             // We assign EVERYTHING to 'armor' so the UI displays it.
+             return { region, type: 'armor', details: validItem };
+          }
+        }
+        
+        console.warn(`  ❌ [${region}] Gave up. No results found.`);
+        return null;
+      } catch (err) {
+        console.error(`Error fetching ${region}:`, err);
+        return null;
       }
-    }
+    });
+
+    const results = await Promise.all(fetchPromises);
+
+    // Check for race conditions
+    if (get().currentFetchId !== fetchId) return;
+
+    // 4. Update State
+    const newArtifacts = {
+      Europe: { armor: null, weapon: null },
+      Asia: { armor: null, weapon: null },
+      'Middle East': { armor: null, weapon: null }
+    };
+
+    results.forEach(res => {
+      if (res) {
+        newArtifacts[res.region].armor = {
+            id: res.details.objectID,
+            title: res.details.title,
+            subtitle: res.details.culture || res.region,
+            description: res.details.medium || res.details.classification,
+            imageUrl: res.details.primaryImageSmall,
+            objectUrl: res.details.objectURL,
+            region: res.region,
+            type: 'armor'
+        };
+      }
+    });
+
+    set({ artifactsByRegion: newArtifacts, isLoading: false });
+  },
+
+  // Alias for backward compatibility if any components still call fetchArtifacts()
+  fetchArtifacts: (fetchId) => {
+      const state = get();
+      get().fetchArtifactsForEra(state.selectedEra, state.selectedTopic, fetchId || state.currentFetchId);
   }
 }));
 

@@ -1,58 +1,39 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect } from 'react';
 import Header from '../components/general/Header';
 import Footer from '../components/general/Footer';
 import RegionColumn from '../components/fordashboard/RegionColumn';
 import { useDashboardStore } from '../store/useDashboardStore';
-import { HISTORICAL_ERAS } from '../data/historicalEras';
+import { TOPICS, HISTORICAL_ERAS } from '../data/config';
 
 const DashboardPage = () => {
   const {
     selectedEra,
     setSelectedEra,
-    searchQuery,
-    setSearchQuery,
+    selectedTopic,
+    setSelectedTopic,
     artifactsByRegion,
     isLoading,
     error,
-    fetchArtifactsForEra,
+    fetchArtifacts,
   } = useDashboardStore();
 
-  // Local state for debounced input
-  const [localSearch, setLocalSearch] = useState(searchQuery);
-
-  // Debounce effect: Update store only after 600ms of inactivity
+  // Fetch artifacts on initial load
   useEffect(() => {
-    const timer = setTimeout(() => {
-      if (localSearch !== searchQuery) {
-        setSearchQuery(localSearch);
-      }
-    }, 600);
-
-    return () => clearTimeout(timer);
-  }, [localSearch, setSearchQuery, searchQuery]);
-
-  // Sync local state if store updates externally (optional but good practice)
-  useEffect(() => {
-    setLocalSearch(searchQuery);
-  }, [searchQuery]);
-
-  // ✅ FIX #1: Fetch artifacts on initial load
-  useEffect(() => {
-    console.log('DashboardPage mounted, fetching artifacts for era:', selectedEra);
-    fetchArtifactsForEra(selectedEra, searchQuery); 
+    console.log('DashboardPage mounted, fetching artifacts');
+    fetchArtifacts();
   }, []); // eslint-disable-line react-hooks/exhaustive-deps
 
-  // ✅ FIX #2: Only call setSelectedEra (it handles the fetch internally)
   const handleEraChange = (e) => {
-    const eraId = e.target.value;
-    setSelectedEra(eraId);
+    setSelectedEra(e.target.value);
   };
 
-  const handleSearchChange = (e) => {
-    setLocalSearch(e.target.value);
+  const handleTopicSelect = (topicId) => {
+    setSelectedTopic(topicId);
   };
 
-  const isBrowseMode = !!searchQuery;
+  // Get current config labels for display
+  const currentEra = HISTORICAL_ERAS.find(e => e.id === selectedEra);
+  const currentTopic = TOPICS.find(t => t.id === selectedTopic);
 
   return (
     <div className="min-h-screen bg-sage flex flex-col">
@@ -64,7 +45,7 @@ const DashboardPage = () => {
           <div className="bg-sage-dark/60 border-4 border-prussian rounded-2xl overflow-hidden">
             <div className="grid grid-cols-[auto,1fr]">
               <div className="bg-sage/60 border-r-4 border-prussian px-4 sm:px-6 py-6 flex flex-col justify-center text-left text-xs sm:text-sm font-heading text-prussian tracking-wide">
-                <span>{isBrowseMode ? 'RESULTS' : 'ARTIFACTS'}</span>
+                <span>ARTIFACTS</span>
               </div>
 
               <div className="px-4 sm:px-6 py-6 bg-sage-light/70">
@@ -72,7 +53,7 @@ const DashboardPage = () => {
                   {Object.entries(artifactsByRegion).map(([regionName, data]) => (
                     <RegionColumn
                       key={regionName}
-                      regionName={isBrowseMode ? `${regionName}` : regionName}
+                      regionName={regionName}
                       armorArtifact={data.armor}
                       weaponArtifact={data.weapon} 
                     />
@@ -82,39 +63,43 @@ const DashboardPage = () => {
             </div>
           </div>
 
-          {/* Controls Section: Search & Era Selector */}
-          <div className="mt-8 max-w-4xl mx-auto grid grid-cols-1 md:grid-cols-2 gap-6">
+          {/* Controls Section: Topic Selector & Era Selector */}
+          <div className="mt-8 max-w-5xl mx-auto space-y-6">
             
-            {/* Search Bar - BROWSE MODE CONTROLLER */}
+            {/* Topic Selector - Curated Theme Buttons */}
             <div>
-              <label htmlFor="dashboard-search" className="block text-center text-sm font-heading text-gold mb-3 tracking-widest uppercase">
-                Browse Mode (Specific Item)
+              <label className="block text-center text-sm font-heading text-gold mb-4 tracking-widest uppercase">
+                Select Topic
               </label>
-              <div className="relative">
-                <input
-                  id="dashboard-search"
-                  type="text"
-                  value={localSearch}
-                  onChange={handleSearchChange}
-                  placeholder="e.g. Helmet, Sword, Pottery..."
-                  className={`w-full px-6 py-4 text-base font-body text-prussian bg-white border-4 rounded-xl shadow-lg focus:outline-none focus:ring-4 transition-all placeholder-prussian/30 ${
-                    isBrowseMode ? 'border-gold ring-gold/20' : 'border-sage-dark'
-                  }`}
-                />
+              <div className="flex flex-wrap justify-center gap-3">
+                {TOPICS.map(topic => (
+                  <button
+                    key={topic.id}
+                    onClick={() => handleTopicSelect(topic.id)}
+                    disabled={isLoading}
+                    className={`px-5 py-3 text-base font-body rounded-xl border-4 transition-all duration-200 disabled:opacity-50 disabled:cursor-not-allowed ${
+                      selectedTopic === topic.id
+                        ? 'bg-gold text-prussian border-gold shadow-lg scale-105'
+                        : 'bg-white text-prussian border-sage-dark hover:border-gold hover:shadow-md'
+                    }`}
+                  >
+                    {topic.label}
+                  </button>
+                ))}
               </div>
             </div>
 
-            {/* Era Selector Dropdown - ERA MODE CONTROLLER */}
-            <div className={isBrowseMode ? 'opacity-50 grayscale' : ''}>
+            {/* Era Selector Dropdown */}
+            <div className="max-w-md mx-auto">
               <label htmlFor="era-select" className="block text-center text-sm font-heading text-gold mb-3 tracking-widest uppercase">
-                {isBrowseMode ? 'Era Mode (Disabled)' : 'Era Mode (Timeline)'}
+                Select Era
               </label>
               <div className="relative">
                 <select
                   id="era-select"
                   value={selectedEra}
                   onChange={handleEraChange}
-                  disabled={isLoading || isBrowseMode} 
+                  disabled={isLoading}
                   className="w-full px-6 py-4 text-base font-body text-white bg-prussian border-4 border-gold rounded-xl shadow-2xl focus:outline-none focus:ring-4 focus:ring-gold/50 cursor-pointer transition-all hover:bg-prussian/90 appearance-none pr-12 disabled:opacity-50 disabled:cursor-not-allowed"
                   style={{ 
                     backgroundImage: `url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' fill='none' viewBox='0 0 24 24' stroke='%23FFFFFF'%3E%3Cpath stroke-linecap='round' stroke-linejoin='round' stroke-width='2' d='M19 9l-7 7-7-7'%3E%3C/path%3E%3C/svg%3E")`,
@@ -138,39 +123,33 @@ const DashboardPage = () => {
             <div className="mt-8 text-center">
               <div className="inline-block animate-spin rounded-full h-8 w-8 border-b-2 border-prussian mb-2"></div>
               <p className="text-xs sm:text-sm font-body text-prussian">
-                {isBrowseMode ? `Scanning global archives for "${searchQuery}"...` : 'Loading curated artifacts...'}
+                Loading {currentTopic?.label} artifacts from {currentEra?.label}...
               </p>
             </div>
           )}
           {error && (
             <p className="mt-8 text-center text-xs sm:text-sm font-body text-red-700 bg-red-50 border-2 border-red-300 rounded-lg p-4">
-              ⚠️ {error}
+              {error}
             </p>
           )}
 
           {/* Current Context Info */}
           <div className="mt-4 text-center">
             <p className="text-xs sm:text-sm font-body text-prussian">
-              {isBrowseMode ? (
-                <span>
-                  Browsing <span className="font-semibold text-gold">"{searchQuery}"</span> across all eras
-                </span>
-              ) : (
-                <span>
-                  Currently exploring: <span className="font-semibold">{HISTORICAL_ERAS.find(e => e.id === selectedEra)?.label}</span>
-                </span>
-              )}
+              <span>
+                Exploring <span className="font-semibold text-gold">{currentTopic?.label}</span> during <span className="font-semibold">{currentEra?.label}</span>
+              </span>
             </p>
           </div>
 
           {/* Page Description */}
           <div className="mt-12 text-center max-w-4xl mx-auto">
             <h2 className="text-2xl sm:text-3xl md:text-4xl font-heading text-prussian mb-4">
-              About Parallel Timelines
+              Topic Explorer
             </h2>
             <p className="text-base sm:text-lg text-gold/90 font-body leading-relaxed">
-              Compare arms, armor, and artifacts across three civilizations at the same moment in history. 
-              Select an era above to see what different cultures were creating simultaneously.
+              Compare artifacts across three civilizations at the same moment in history. 
+              Select a topic and era to see what different cultures were creating simultaneously.
             </p>
           </div>
         </section>

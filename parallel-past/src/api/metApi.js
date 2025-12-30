@@ -26,16 +26,16 @@ export const searchMetObjects = async ({
   geoLocation = null, 
   dateBegin = null, 
   dateEnd = null,
-  isHighlight = false // <--- NEW PARAMETER
+  isHighlight = false
 }) => {
   const url = buildUrl('/search', {
-    q: query || '*', // If empty query, search everything (though usually requires other filters)
+    q: query || '*',
     hasImages: 'true',
     departmentId: departmentId, 
     geoLocation: geoLocation,
     dateBegin: dateBegin,
     dateEnd: dateEnd,
-    isHighlight: isHighlight // <--- Pass it to the API
+    isHighlight: isHighlight
   });
 
   console.log('Calling Met API (Search):', url);
