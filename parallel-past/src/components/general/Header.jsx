@@ -4,6 +4,7 @@ import { motion, AnimatePresence } from 'framer-motion';
 import { Menu, X, Heart } from 'lucide-react';
 import { useDashboardStore } from '../../store/useDashboardStore';
 import CollectionDrawer from './CollectionDrawer';
+import creativeLogo from '../../assets/images/My logo for creatives.png';
 
 const Header = () => {
   const [scrolled, setScrolled] = useState(false);
@@ -55,10 +56,14 @@ const Header = () => {
           
           {/* Logo + Title */}
           <Link to="/" className="flex items-center gap-2 sm:gap-3 group">
-            <div className={`w-10 h-10 sm:w-12 sm:h-12 rounded-full border-4 flex items-center justify-center transition-colors duration-300 ${
+            <div className={`w-10 h-10 sm:w-12 sm:h-12 rounded-full border-4 flex items-center justify-center overflow-hidden transition-colors duration-300 ${
               scrolled ? 'border-prussian bg-white' : 'border-white bg-transparent'
             }`}>
-              <span className="text-lg sm:text-xl group-hover:scale-110 transition-transform duration-300">🧭</span>
+              <img 
+                src={creativeLogo} 
+                alt="Creative Logo" 
+                className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-300"
+              />
             </div>
             <h1 className={`text-lg sm:text-xl md:text-2xl font-heading whitespace-nowrap transition-colors duration-300 ${
               scrolled ? 'text-prussian' : 'text-white'
