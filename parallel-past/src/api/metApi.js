@@ -1,17 +1,13 @@
 // these are my helping  functions for talking to The Metropolitan Museum of Art Collection API.
 // Base URL for all endpoints we care about.
-// Using local proxy /api/met to avoid CORS issues i got.
-const MET_BASE_URL = '/api/met/public/collection/v1';
+const MET_BASE_URL = 'https://collectionapi.metmuseum.org/public/collection/v1';
 
 // Helper: build a full URL from a path and a params object.
 // Example:
 //   buildUrl('/search', { q: 'helmet', departmentId: 4 })
 //   -> "https://.../public/collection/v1/search?q=helmet&departmentId=4"
 const buildUrl = (path, params = {}) => {
-  // Properly concatenate base URL with path
-  const fullPath = `${MET_BASE_URL}${path}`;
-  // Use window.location.origin as base for relative proxy URLs
-  const url = new URL(fullPath, window.location.origin);
+  const url = new URL(`${MET_BASE_URL}${path}`);
   Object.entries(params).forEach(([key, value]) => {
     if (value === undefined || value === null || value === '') return;
     url.searchParams.set(key, String(value));
