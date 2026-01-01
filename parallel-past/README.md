@@ -307,22 +307,12 @@ This transformed the app from a "Gallery" into a "Guided Tour."
 
 ### 🔧 Phase 5: Technical Challenges & Solutions
 
-#### CORS Issues with Met Museum API
-**Problem:** Direct API calls from the browser were blocked by CORS policy.
+#### API Deployment & CORS Strategy
+**Initial Approach:** Used a local Vite proxy (`/api/met`) to avoid CORS issues during development.
 
-**Solution:** Configured Vite development server proxy:
-```javascript
-// vite.config.js
-server: {
-  proxy: {
-    '/api/met': {
-      target: 'https://collectionapi.metmuseum.org',
-      changeOrigin: true,
-      rewrite: (path) => path.replace(/^\/api\/met/, ''),
-    },
-  },
-}
-```
+**Problem:** This failed in production (Vercel) because the proxy configuration is dev-server specific, resulting in 404 errors for all API calls.
+
+**Final Solution:** Switched to direct absolute URLs (`https://collectionapi.metmuseum.org/...`). The Met Museum API actually supports CORS for public endpoints, so the proxy was unnecessary and harmful for deployment.
 
 #### State Management Complexity
 **Problem:** Managing artifacts for 3 regions × 3 topics × 2 eras = 18 data points.
@@ -409,7 +399,7 @@ npm run preview
 ```
 
 ### Development Server
-The app runs on `http://localhost:5173` by default. The Vite proxy handles API requests to avoid CORS issues.
+The app runs on `http://localhost:5173` by default. API requests are made directly to the Met Museum API.
 
 ---
 
